@@ -17,7 +17,7 @@ const Register = () => {
             await authAPI.register({ username, email, password });
             navigate('/login');
         } catch (err) {
-            setError('Failed to register. Please check your details.');
+            setError(err.message || 'Failed to register.');
         }
     };
 

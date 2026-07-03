@@ -16,7 +16,10 @@ export const authAPI = {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(credentials)
         });
-        if (!res.ok) throw new Error(await res.text());
+        if (!res.ok) {
+            const errBody = await res.json().catch(() => ({}));
+            throw new Error(errBody.error || `Login failed (status ${res.status})`);
+        }
         return res.json();
     },
     register: async (userData) => {
@@ -25,7 +28,10 @@ export const authAPI = {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(userData)
         });
-        if (!res.ok) throw new Error(await res.text());
+        if (!res.ok) {
+            const errBody = await res.json().catch(() => ({}));
+            throw new Error(errBody.error || `Register failed (status ${res.status})`);
+        }
         return res.json();
     }
 };
@@ -56,7 +62,10 @@ export const projectsAPI = {
             headers: getAuthHeaders(),
             body: JSON.stringify(projectData)
         });
-        if (!res.ok) throw new Error('Failed to update project');
+        if (!res.ok) {
+            const errBody = await res.json().catch(() => ({}));
+            throw new Error(errBody.error || `Failed to update project (status ${res.status})`);
+        }
         return res.json();
     },
     delete: async (id) => {
