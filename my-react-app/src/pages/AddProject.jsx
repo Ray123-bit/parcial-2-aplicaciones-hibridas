@@ -7,6 +7,7 @@ const AddProject = () => {
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
     const [section, setSection] = useState('');
+    const [img, setImg] = useState('');
     const [error, setError] = useState(null);
     const navigate = useNavigate();
 
@@ -14,7 +15,7 @@ const AddProject = () => {
         e.preventDefault();
         setError(null);
         try {
-            await projectsAPI.create({ name, description, section });
+            await projectsAPI.create({ name, description, section, img });
             navigate('/'); 
         } catch (err) {
             setError('Failed to create project. Make sure you are logged in!');
@@ -53,6 +54,13 @@ const AddProject = () => {
                     value={section} 
                     onChange={(e) => setSection(e.target.value)} 
                     required 
+                    style={{ padding: '10px' }}
+                />
+                <input 
+                    type="text" 
+                    placeholder="Image URL (optional)" 
+                    value={img} 
+                    onChange={(e) => setImg(e.target.value)} 
                     style={{ padding: '10px' }}
                 />
                 <button type="submit" style={{ padding: '10px', background: '#28a745', color: 'white', border: 'none', cursor: 'pointer', fontWeight: 'bold' }}>

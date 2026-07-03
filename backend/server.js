@@ -13,6 +13,7 @@ app.get('/test', (req, res) => res.json({ message: 'Server works!' }));
 
 app.use('/api/auth', authRoutes);
 app.use('/api', projectRoutes);
+app.use('/uploads', express.static('uploads'));
 
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, '127.0.0.1', () => console.log(`🚀 Server running on http://127.0.0.1:${PORT}`));

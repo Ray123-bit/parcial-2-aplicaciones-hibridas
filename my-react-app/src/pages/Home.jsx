@@ -75,6 +75,14 @@ const Home = () => {
             <div className="project-grid">
                 {projects.map((project) => (
                     <div key={project._id} className="project-card">
+                        {project.img && (
+                            <img
+                                src={project.img}
+                                alt={project.name}
+                                style={{ width: '100%', height: '160px', objectFit: 'cover', borderRadius: '8px', marginBottom: '15px' }}
+                                onError={(e) => { e.target.style.display = 'none'; }}
+                            />
+                        )}
                         <h3>{project.name}</h3>
                         <p>{project.description}</p>
                         

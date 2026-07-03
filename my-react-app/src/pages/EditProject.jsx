@@ -10,6 +10,7 @@ const EditProject = () => {
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
     const [section, setSection] = useState('');
+    const [img, setImg] = useState('');
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true);
 
@@ -20,6 +21,7 @@ const EditProject = () => {
                 setName(data.name);
                 setDescription(data.description);
                 setSection(data.section);
+                setImg(data.img || '');
             } catch (err) {
                 setError('Failed to load project details.');
             } finally {
@@ -32,11 +34,19 @@ const EditProject = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError(null);
+
+        const token = localStorage.getItem('token');
+        if (!token) {
+            setError('No login token found. Please log out and log in again.');
+            return;
+        }
+
         try {
-            await projectsAPI.update(id, { name, description, section });
+            await projectsAPI.update(id, { name, description, section, img });
             navigate('/'); 
         } catch (err) {
-            setError('Failed to update project. Make sure you are logged in!');
+            // Show the REAL error instead of a generic message
+            setError(`Update failed: ${err.message}`);
         }
     };
 
@@ -74,6 +84,13 @@ const EditProject = () => {
                     value={section} 
                     onChange={(e) => setSection(e.target.value)} 
                     required 
+                    style={{ padding: '10px' }}
+                />
+                <input 
+                    type="text" 
+                    placeholder="Image URL (optional)" 
+                    value={img} 
+                    onChange={(e) => setImg(e.target.value)} 
                     style={{ padding: '10px' }}
                 />
                 <button type="submit" style={{ padding: '10px', background: '#ffc107', color: 'black', border: 'none', cursor: 'pointer', fontWeight: 'bold' }}>
